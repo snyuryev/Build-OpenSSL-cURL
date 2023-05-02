@@ -540,77 +540,28 @@ fi
 echo "Unpacking nghttp2"
 tar xfz "${NGHTTP2_VERSION}.tar.gz"
 
-echo -e "${bold}Building Mac libraries${dim}"
-buildMac "x86_64"
-buildMac "arm64"
-
-lipo \
-        "${NGHTTP2}/Mac/x86_64/lib/libnghttp2.a" \
-		"${NGHTTP2}/Mac/arm64/lib/libnghttp2.a" \
-        -create -output "${NGHTTP2}/lib/libnghttp2_Mac.a"
-
-if [ $catalyst == "1" ]; then
-echo -e "${bold}Building Catalyst libraries${dim}"
-buildCatalyst "x86_64"
-buildCatalyst "arm64"
-
-lipo \
-        "${NGHTTP2}/Catalyst/x86_64/lib/libnghttp2.a" \
-		"${NGHTTP2}/Catalyst/arm64/lib/libnghttp2.a" \
-        -create -output "${NGHTTP2}/lib/libnghttp2_Catalyst.a"
-fi
-
 echo -e "${bold}Building iOS libraries (bitcode)${dim}"
-buildIOS "armv7" "bitcode"
-buildIOS "armv7s" "bitcode"
 buildIOS "arm64" "bitcode"
 buildIOS "arm64e" "bitcode"
 
 buildIOSsim "x86_64" "bitcode"
 buildIOSsim "arm64" "bitcode"
-buildIOSsim "i386" "bitcode"
 
 lipo \
-	"${NGHTTP2}/iOS/armv7/lib/libnghttp2.a" \
-	"${NGHTTP2}/iOS/armv7s/lib/libnghttp2.a" \
-	"${NGHTTP2}/iOS-simulator/i386/lib/libnghttp2.a" \
 	"${NGHTTP2}/iOS/arm64/lib/libnghttp2.a" \
 	"${NGHTTP2}/iOS/arm64e/lib/libnghttp2.a" \
 	"${NGHTTP2}/iOS-simulator/x86_64/lib/libnghttp2.a" \
 	-create -output "${NGHTTP2}/lib/libnghttp2_iOS-fat.a"
 
 lipo \
-	"${NGHTTP2}/iOS/armv7/lib/libnghttp2.a" \
-	"${NGHTTP2}/iOS/armv7s/lib/libnghttp2.a" \
 	"${NGHTTP2}/iOS/arm64/lib/libnghttp2.a" \
 	"${NGHTTP2}/iOS/arm64e/lib/libnghttp2.a" \
 	-create -output "${NGHTTP2}/lib/libnghttp2_iOS.a"
 
 lipo \
-	"${NGHTTP2}/iOS-simulator/i386/lib/libnghttp2.a" \
 	"${NGHTTP2}/iOS-simulator/x86_64/lib/libnghttp2.a" \
 	"${NGHTTP2}/iOS-simulator/arm64/lib/libnghttp2.a" \
 	-create -output "${NGHTTP2}/lib/libnghttp2_iOS-simulator.a"
-
-echo -e "${bold}Building tvOS libraries${dim}"
-buildTVOS "arm64"
-
-lipo \
-        "${NGHTTP2}/tvOS/arm64/lib/libnghttp2.a" \
-        -create -output "${NGHTTP2}/lib/libnghttp2_tvOS.a"
-
-buildTVOSsim "x86_64"
-buildTVOSsim "arm64"
-
-lipo \
-        "${NGHTTP2}/tvOS/arm64/lib/libnghttp2.a" \
-        "${NGHTTP2}/tvOS-simulator/x86_64/lib/libnghttp2.a" \
-        -create -output "${NGHTTP2}/lib/libnghttp2_tvOS-fat.a"
-
-lipo \
-	"${NGHTTP2}/tvOS-simulator/x86_64/lib/libnghttp2.a" \
-	"${NGHTTP2}/tvOS-simulator/arm64/lib/libnghttp2.a" \
-	-create -output "${NGHTTP2}/lib/libnghttp2_tvOS-simulator.a"
 
 echo -e "${bold}Cleaning up${dim}"
 rm -rf /tmp/${NGHTTP2_VERSION}-*

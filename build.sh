@@ -159,7 +159,7 @@ if [ "$catalyst" == "-m" ]; then
 else
 	echo "This script builds OpenSSL, nghttp2 and libcurl for MacOS, iOS and tvOS devices."
 fi
-echo "Targets: x86_64, armv7, armv7s, arm64 and arm64e"
+echo "Targets: x86_64, arm64 and arm64e"
 
 ## Start Counter
 START=$(date +%s)
